@@ -1,8 +1,13 @@
+import { Route, Routes } from "react-router";
+import DashboardPage from "./pages/DashboardPage";
+import MachineDetailsPage from "./pages/MachineDetailsPage";
+
 function App() {
   return (
-    <div>
-      <h1>Smart Factory Monitoring Platform</h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<DashboardPage />} />
+      <Route path="/machines/:id" element={<MachineDetailsPage />} />
+    </Routes>
   );
 }
 
