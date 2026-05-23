@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import { healthRoutes } from "./routes/health.routes";
 
 const app = Fastify({
   logger: true,
@@ -6,9 +7,11 @@ const app = Fastify({
 
 app.get("/", async () => {
   return {
-    message: "Smart Factory Backend Running",
+    message: "Welcome to Smart Factory Monitoring Platform Backend",
   };
 });
+
+app.register(healthRoutes);
 
 const start = async () => {
   try {
