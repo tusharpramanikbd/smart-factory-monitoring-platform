@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import Fastify from "fastify";
 import { healthRoutes } from "./routes/health.routes";
 
@@ -16,7 +18,7 @@ app.register(healthRoutes);
 const start = async () => {
   try {
     await app.listen({
-      port: 5000,
+      port: Number(process.env.PORT),
     });
 
     console.log("Server running on port 5000");
