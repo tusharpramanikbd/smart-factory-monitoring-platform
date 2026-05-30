@@ -2,6 +2,7 @@ import "dotenv/config";
 
 import Fastify from "fastify";
 import { healthRoutes } from "./routes/health.routes";
+import { machineRoutes } from "./routes/machine.routes";
 
 const app = Fastify({
   logger: true,
@@ -14,6 +15,7 @@ app.get("/", async () => {
 });
 
 app.register(healthRoutes);
+app.register(machineRoutes);
 
 const start = async () => {
   try {
