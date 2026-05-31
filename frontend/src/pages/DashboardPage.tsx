@@ -1,5 +1,5 @@
 import { useMachines } from "../hooks/useMachines";
-import { MachineCard } from "../components/MachineCard";
+import { MachineCard } from "../components/ui/MachineCard";
 
 export default function DashboardPage() {
   const { machines, loading } = useMachines();
