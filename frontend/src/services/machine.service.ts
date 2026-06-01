@@ -6,3 +6,9 @@ export async function getMachines() {
 
   return response.data;
 }
+
+export async function getMachineById(id: string) {
+  const response = await api.get<Machine>(`/machines/${id}`);
+
+  return response.data;
+}
