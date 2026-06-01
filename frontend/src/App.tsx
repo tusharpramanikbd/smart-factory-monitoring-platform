@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 import DashboardPage from "./pages/DashboardPage";
-import MachineDetailsPage from "./pages/MachineDetailsPage";
+import MachineDetailsPage from "./pages/machines/MachineDetailsPage";
 
 function App() {
   return (

@@ -1,14 +1,19 @@
 import type { Machine } from "@/types/machine.types";
 import { StatusBadge } from "../../../components/shared/StatusBadge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router";
 
 interface MachineCardProps {
   machine: Machine;
 }
 
 export function MachineCard({ machine }: MachineCardProps) {
+  const navigate = useNavigate();
   return (
-    <Card className="w-full">
+    <Card
+      className="w-full cursor-pointer transition hover:shadow-md"
+      onClick={() => navigate(`/machines/${machine.id}`)}
+    >
       <CardHeader>
         <CardTitle>{machine.name}</CardTitle>
       </CardHeader>
