@@ -1,9 +1,9 @@
-import { useMachines } from "@/hooks/useMachines";
 import { MachineCard } from "@/features/machines/components/MachineCard";
 import { KpiCard } from "@/components/shared/KpiCard";
+import { useMachines } from "@/features/machines/hooks/useMachines";
 
 export default function DashboardPage() {
-  const { machines, loading } = useMachines();
+  const { machines, loading, error } = useMachines();
 
   const totalMachines = machines.length;
 
@@ -21,6 +21,14 @@ export default function DashboardPage() {
 
   if (loading) {
     return <div>Loading machines...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-6">
+        <p>Failed to load machine data.</p>
+      </div>
+    );
   }
 
   return (
