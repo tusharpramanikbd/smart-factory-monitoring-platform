@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useSensorReading } from "@/features/sensors/hooks/useSensorReading";
+import { MetricCard } from "@/components/shared/MetricCard";
 
 export default function MachineDetailsPage() {
   const { id } = useParams();
@@ -70,31 +71,28 @@ export default function MachineDetailsPage() {
             {sensorLoading ? (
               <p>Loading metrics...</p>
             ) : (
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Temperature</p>
-                  <p>{sensorReading?.temperature} °C</p>
-                </div>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <MetricCard
+                  label="Temperature"
+                  value={`${sensorReading?.temperature} °C`}
+                />
 
-                <div>
-                  <p className="text-sm text-muted-foreground">RPM</p>
-                  <p>{sensorReading?.rpm}</p>
-                </div>
+                <MetricCard label="RPM" value={sensorReading?.rpm ?? "-"} />
 
-                <div>
-                  <p className="text-sm text-muted-foreground">Pressure</p>
-                  <p>{sensorReading?.pressure}</p>
-                </div>
+                <MetricCard
+                  label="Pressure"
+                  value={sensorReading?.pressure ?? "-"}
+                />
 
-                <div>
-                  <p className="text-sm text-muted-foreground">Power Usage</p>
-                  <p>{sensorReading?.powerUsage} kW</p>
-                </div>
+                <MetricCard
+                  label="Power Usage"
+                  value={`${sensorReading?.powerUsage} kW`}
+                />
 
-                <div>
-                  <p className="text-sm text-muted-foreground">Vibration</p>
-                  <p>{sensorReading?.vibration}</p>
-                </div>
+                <MetricCard
+                  label="Vibration"
+                  value={sensorReading?.vibration ?? "-"}
+                />
               </div>
             )}
           </div>
