@@ -3,11 +3,22 @@ import { Card, CardContent } from "@/components/ui/card";
 interface MetricCardProps {
   label: string;
   value: string | number;
+  status?: "healthy" | "warning" | "critical";
 }
 
-export function MetricCard({ label, value }: MetricCardProps) {
+const statusClasses = {
+  healthy: "border-green-500",
+  warning: "border-yellow-500",
+  critical: "border-red-500",
+};
+
+export function MetricCard({
+  label,
+  value,
+  status = "healthy",
+}: MetricCardProps) {
   return (
-    <Card>
+    <Card className={`border-l-4 ${statusClasses[status]}`}>
       <CardContent className="p-4">
         <p className="text-sm text-muted-foreground">{label}</p>
 

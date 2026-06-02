@@ -28,6 +28,20 @@ export default function MachineDetailsPage() {
     return <div className="p-6">Machine not found.</div>;
   }
 
+  const temperatureStatus =
+    sensorReading && sensorReading.temperature >= 70
+      ? "critical"
+      : sensorReading && sensorReading.temperature >= 60
+        ? "warning"
+        : "healthy";
+
+  const vibrationStatus =
+    sensorReading && sensorReading.vibration >= 0.8
+      ? "critical"
+      : sensorReading && sensorReading.vibration >= 0.5
+        ? "warning"
+        : "healthy";
+
   return (
     <div className="container mx-auto p-6">
       <Button
@@ -75,6 +89,7 @@ export default function MachineDetailsPage() {
                 <MetricCard
                   label="Temperature"
                   value={`${sensorReading?.temperature} °C`}
+                  status={temperatureStatus}
                 />
 
                 <MetricCard label="RPM" value={sensorReading?.rpm ?? "-"} />
@@ -92,6 +107,7 @@ export default function MachineDetailsPage() {
                 <MetricCard
                   label="Vibration"
                   value={sensorReading?.vibration ?? "-"}
+                  status={vibrationStatus}
                 />
               </div>
             )}
