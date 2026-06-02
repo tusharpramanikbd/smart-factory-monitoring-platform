@@ -5,11 +5,13 @@ import { StatusBadge } from "@/components/shared/StatusBadge";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
+import { useSensorReading } from "@/features/sensors/hooks/useSensorReading";
 
 export default function MachineDetailsPage() {
   const { id } = useParams();
 
   const { machine, loading, error } = useMachine(id ?? "");
+  const { sensorReading, loading: sensorLoading } = useSensorReading(id ?? "");
 
   const navigate = useNavigate();
 
@@ -27,7 +29,11 @@ export default function MachineDetailsPage() {
 
   return (
     <div className="container mx-auto p-6">
-      <Button variant="outline" className="mb-4" onClick={() => navigate("/")}>
+      <Button
+        variant="outline"
+        className="mb-4 cursor-pointer"
+        onClick={() => navigate("/")}
+      >
         <ArrowLeft />
         Back to Dashboard
       </Button>
@@ -56,6 +62,41 @@ export default function MachineDetailsPage() {
             <p className="text-sm text-muted-foreground">Location</p>
 
             <p>{machine.location}</p>
+          </div>
+
+          <div className="border-t pt-4">
+            <h2 className="mb-4 font-semibold">Live Metrics</h2>
+
+            {sensorLoading ? (
+              <p>Loading metrics...</p>
+            ) : (
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Temperature</p>
+                  <p>{sensorReading?.temperature} °C</p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-muted-foreground">RPM</p>
+                  <p>{sensorReading?.rpm}</p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-muted-foreground">Pressure</p>
+                  <p>{sensorReading?.pressure}</p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-muted-foreground">Power Usage</p>
+                  <p>{sensorReading?.powerUsage} kW</p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-muted-foreground">Vibration</p>
+                  <p>{sensorReading?.vibration}</p>
+                </div>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
