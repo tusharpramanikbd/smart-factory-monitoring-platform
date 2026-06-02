@@ -10,6 +10,9 @@ export function useSensorReading(machineId: string) {
     queryKey: ["sensor-reading", machineId],
     queryFn: () => getMachineSensorReading(machineId),
     enabled: !!machineId,
+
+    refetchInterval: 5000,
+    refetchOnWindowFocus: true,
   });
 
   return {
