@@ -1,9 +1,11 @@
-import { MachineState } from "./machine-state.types";
+import { MachineOperationalState } from "./machine-state.types";
 
 export interface MachineRuntime {
   machineId: string;
 
-  state: MachineState;
+  operationalState: MachineOperationalState;
+
+  health: number;
 
   temperature: number;
   vibration: number;

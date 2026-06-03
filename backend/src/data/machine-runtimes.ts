@@ -4,7 +4,9 @@ import { MachineRuntime } from "../types/machine-runtime.types";
 export const machineRuntimes: MachineRuntime[] = machines.map((machine) => ({
   machineId: machine.id,
 
-  state: "running",
+  health: 100,
+
+  operationalState: "running",
 
   temperature: 75,
   vibration: 1.5,

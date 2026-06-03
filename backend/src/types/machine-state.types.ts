@@ -1,9 +1,6 @@
-export type MachineState =
-  | "idle"
-  | "starting"
-  | "running"
-  | "warning"
-  | "failing";
+export type MachineOperationalState = "idle" | "starting" | "running";
+
+export type MachineHealthState = "healthy" | "warning" | "failing";
 
 export interface MachineStateProfile {
   temperature: number;

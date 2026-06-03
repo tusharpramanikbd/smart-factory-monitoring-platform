@@ -24,7 +24,7 @@ app.register(sensorRoutes);
 const start = async () => {
   try {
     await app.register(cors, {
-      origin: process.env.ORIGIN,
+      origin: true,
     });
 
     await app.listen({
