@@ -1,0 +1,1 @@
+export const TELEMETRY_INTERVAL_MS = 5000;

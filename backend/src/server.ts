@@ -6,6 +6,7 @@ import cors from "@fastify/cors";
 import { healthRoutes } from "./routes/health.routes";
 import { machineRoutes } from "./routes/machine.routes";
 import { sensorRoutes } from "./routes/sensor.routes";
+import { startTelemetryLoop } from "./services/telemetry.service";
 
 const app = Fastify({
   logger: true,
@@ -26,6 +27,9 @@ const start = async () => {
     await app.register(cors, {
       origin: true,
     });
+
+    // Starting the telemetry loop to generate sensor readings every 5 seconds
+    startTelemetryLoop();
 
     await app.listen({
       port: Number(process.env.PORT),
