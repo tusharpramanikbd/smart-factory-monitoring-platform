@@ -2,6 +2,7 @@ import { TELEMETRY_INTERVAL_MS } from "../constants/telemetry.constants";
 import { machines } from "../data/machines";
 import { generateSensorReading } from "../simulators/sensor.simulator";
 import { SensorReading } from "../types/sensor-reading.types";
+import { TelemetryUpdateMessage } from "../types/websocket-message.types";
 import { broadcast } from "./websocket.service";
 
 const latestReadings = new Map<string, SensorReading>();
@@ -21,10 +22,12 @@ function updateTelemetry() {
     latestReadings.set(machine.id, reading);
   }
 
-  broadcast({
+  const message: TelemetryUpdateMessage = {
     type: "telemetry-update",
     data: getLatestReadings(),
-  });
+  };
+
+  broadcast(message);
 }
 
 export function getLatestReadings(): SensorReading[] {
