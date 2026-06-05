@@ -1,16 +1,25 @@
 import { FastifyInstance } from "fastify";
+
 import { addClient, removeClient } from "../services/websocket.service";
 
+import { MachineWebSocketParams } from "../types/websocket-route.types";
+
 export async function telemetryRoutes(app: FastifyInstance) {
-  app.get("/ws/telemetry", { websocket: true }, (socket) => {
-    console.log("Client connected");
+  app.get(
+    "/ws/telemetry/:machineId",
+    { websocket: true },
+    (socket, request) => {
+      const { machineId } = request.params as MachineWebSocketParams;
 
-    addClient(socket);
+      console.log(`Client connected to machine ${machineId}`);
 
-    socket.on("close", () => {
-      console.log("Client disconnected");
+      addClient(machineId, socket);
 
-      removeClient(socket);
-    });
-  });
+      socket.on("close", () => {
+        console.log(`Client disconnected from machine ${machineId}`);
+
+        removeClient(machineId, socket);
+      });
+    },
+  );
 }

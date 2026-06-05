@@ -3,7 +3,7 @@ import { machines } from "../data/machines";
 import { generateSensorReading } from "../simulators/sensor.simulator";
 import { SensorReading } from "../types/sensor-reading.types";
 import { TelemetryUpdateMessage } from "../types/websocket-message.types";
-import { broadcast } from "./websocket.service";
+import { broadcastToMachine } from "./websocket.service";
 
 const latestReadings = new Map<string, SensorReading>();
 
@@ -22,12 +22,20 @@ function updateTelemetry() {
     latestReadings.set(machine.id, reading);
   }
 
-  const message: TelemetryUpdateMessage = {
-    type: "telemetry-update",
-    data: getLatestReadings(),
-  };
+  for (const machine of machines) {
+    const reading = latestReadings.get(machine.id);
 
-  broadcast(message);
+    if (!reading) {
+      continue;
+    }
+
+    const message: TelemetryUpdateMessage = {
+      type: "telemetry-update",
+      data: [reading],
+    };
+
+    broadcastToMachine(machine.id, message);
+  }
 }
 
 export function getLatestReadings(): SensorReading[] {
