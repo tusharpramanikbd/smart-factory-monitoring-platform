@@ -20,7 +20,9 @@ export function useMachineTelemetry(machineId: string) {
       return;
     }
 
-    const socket = new WebSocket("ws://localhost:5000/ws/telemetry");
+    const socket = new WebSocket(
+      `ws://localhost:5000/ws/telemetry/${machineId}`,
+    );
 
     socket.onopen = () => {
       setConnectionStatus("connected");
@@ -37,13 +39,7 @@ export function useMachineTelemetry(machineId: string) {
     socket.onmessage = (event) => {
       const message: TelemetryUpdateMessage = JSON.parse(event.data);
 
-      const reading = message.data.find(
-        (reading) => reading.machineId === machineId,
-      );
-
-      if (reading) {
-        setSensorReading(reading);
-      }
+      setSensorReading(message.data[0]);
     };
 
     return () => {
