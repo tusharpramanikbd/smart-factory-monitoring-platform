@@ -5,14 +5,14 @@ import { StatusBadge } from "@/components/shared/StatusBadge";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import { useSensorReading } from "@/features/sensors/hooks/useSensorReading";
 import { MetricCard } from "@/components/shared/MetricCard";
+import { useMachineTelemetry } from "@/features/sensors/hooks/useMachineTelemetry";
 
 export default function MachineDetailsPage() {
   const { id } = useParams();
 
   const { machine, loading, error } = useMachine(id ?? "");
-  const { sensorReading, loading: sensorLoading } = useSensorReading(id ?? "");
+  const { sensorReading, connectionStatus } = useMachineTelemetry(id ?? "");
 
   const navigate = useNavigate();
 
@@ -80,9 +80,14 @@ export default function MachineDetailsPage() {
           </div>
 
           <div className="border-t pt-4">
-            <h2 className="mb-4 font-semibold">Live Metrics</h2>
+            <h2 className="mb-2 font-semibold">Live Metrics</h2>
+            <p className="mb-2 text-sm text-muted-foreground">
+              {connectionStatus === "connecting" && "🟡 Connecting..."}
+              {connectionStatus === "connected" && "🟢 Live"}
+              {connectionStatus === "disconnected" && "🔴 Disconnected"}
+            </p>
 
-            {sensorLoading ? (
+            {!sensorReading ? (
               <p>Loading metrics...</p>
             ) : (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
