@@ -1,12 +1,12 @@
 import type { SensorReading } from "@/types/sensor.types";
 import { useEffect, useState } from "react";
 
-interface TelemetryUpdateMessage {
-  type: "telemetry-update";
+interface SensorUpdateMessage {
+  type: "sensor-update";
   data: SensorReading[];
 }
 
-export function useMachineTelemetry(machineId: string) {
+export function useMachineSensors(machineId: string) {
   const [sensorReading, setSensorReading] = useState<
     SensorReading | undefined
   >();
@@ -20,9 +20,7 @@ export function useMachineTelemetry(machineId: string) {
       return;
     }
 
-    const socket = new WebSocket(
-      `ws://localhost:5000/ws/telemetry/${machineId}`,
-    );
+    const socket = new WebSocket(`ws://localhost:5000/ws/sensors/${machineId}`);
 
     socket.onopen = () => {
       setConnectionStatus("connected");
@@ -37,7 +35,7 @@ export function useMachineTelemetry(machineId: string) {
     };
 
     socket.onmessage = (event) => {
-      const message: TelemetryUpdateMessage = JSON.parse(event.data);
+      const message: SensorUpdateMessage = JSON.parse(event.data);
 
       setSensorReading(message.data[0]);
     };

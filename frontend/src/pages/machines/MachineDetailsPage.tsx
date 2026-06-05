@@ -6,13 +6,13 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { MetricCard } from "@/components/shared/MetricCard";
-import { useMachineTelemetry } from "@/features/sensors/hooks/useMachineTelemetry";
+import { useMachineSensors } from "@/features/sensors/hooks/useMachineSensors";
 
 export default function MachineDetailsPage() {
   const { id } = useParams();
 
   const { machine, loading, error } = useMachine(id ?? "");
-  const { sensorReading, connectionStatus } = useMachineTelemetry(id ?? "");
+  const { sensorReading, connectionStatus } = useMachineSensors(id ?? "");
 
   const navigate = useNavigate();
 
