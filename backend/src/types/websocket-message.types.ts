@@ -1,6 +1,6 @@
 import { SensorReading } from "./sensor-reading.types";
 
-export interface TelemetryUpdateMessage {
-  type: "telemetry-update";
+export interface SensorUpdateMessage {
+  type: "sensor-update";
   data: SensorReading[];
 }

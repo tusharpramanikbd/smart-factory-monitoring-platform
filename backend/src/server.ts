@@ -7,9 +7,9 @@ import websocket from "@fastify/websocket";
 import { healthRoutes } from "./routes/health.routes";
 import { machineRoutes } from "./routes/machine.routes";
 import { sensorRoutes } from "./routes/sensor.routes";
-import { telemetryRoutes } from "./routes/telemetry.routes";
+import { sensorWebSocketRoutes } from "./routes/sensor-websocket.routes";
 
-import { startTelemetryLoop } from "./services/telemetry.service";
+import { startSensorUpdateLoop } from "./services/sensor-stream.service";
 
 const app = Fastify({
   logger: true,
@@ -24,7 +24,7 @@ app.get("/", async () => {
 const start = async () => {
   try {
     await app.register(cors, {
-      origin: true,
+      origin: "*",
     });
 
     await app.register(websocket);
@@ -32,10 +32,10 @@ const start = async () => {
     await app.register(healthRoutes);
     await app.register(machineRoutes);
     await app.register(sensorRoutes);
-    await app.register(telemetryRoutes);
+    await app.register(sensorWebSocketRoutes);
 
-    // Starting the telemetry loop to generate sensor readings every 5 seconds
-    startTelemetryLoop();
+    // Starting the sensor update loop to generate sensor readings every 5 seconds
+    startSensorUpdateLoop();
 
     await app.listen({
       port: Number(process.env.PORT),

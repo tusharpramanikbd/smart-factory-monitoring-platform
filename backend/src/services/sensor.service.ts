@@ -1,4 +1,4 @@
-import { getLatestReading, getLatestReadings } from "./telemetry.service";
+import { getLatestReading, getLatestReadings } from "./sensor-stream.service";
 
 export function getCurrentSensorReadings() {
   return getLatestReadings();

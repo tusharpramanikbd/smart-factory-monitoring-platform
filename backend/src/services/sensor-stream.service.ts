@@ -1,21 +1,21 @@
-import { TELEMETRY_INTERVAL_MS } from "../constants/telemetry.constants";
+import { SENSOR_UPDATE_INTERVAL_MS } from "../constants/sensor.constants";
 import { machines } from "../data/machines";
 import { generateSensorReading } from "../simulators/sensor.simulator";
 import { SensorReading } from "../types/sensor-reading.types";
-import { TelemetryUpdateMessage } from "../types/websocket-message.types";
+import { SensorUpdateMessage } from "../types/websocket-message.types";
 import { broadcastToMachine } from "./websocket.service";
 
 const latestReadings = new Map<string, SensorReading>();
 
-export function startTelemetryLoop() {
-  updateTelemetry();
+export function startSensorUpdateLoop() {
+  updateSensorReadings();
 
   setInterval(() => {
-    updateTelemetry();
-  }, TELEMETRY_INTERVAL_MS);
+    updateSensorReadings();
+  }, SENSOR_UPDATE_INTERVAL_MS);
 }
 
-function updateTelemetry() {
+function updateSensorReadings() {
   for (const machine of machines) {
     const reading = generateSensorReading(machine.id);
 
@@ -29,8 +29,8 @@ function updateTelemetry() {
       continue;
     }
 
-    const message: TelemetryUpdateMessage = {
-      type: "telemetry-update",
+    const message: SensorUpdateMessage = {
+      type: "sensor-update",
       data: [reading],
     };
 
