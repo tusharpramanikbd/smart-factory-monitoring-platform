@@ -1,10 +1,6 @@
-import type { SensorReading } from "@/types/sensor.types";
+import type { SensorReading } from "@shared/types/sensor-reading.types";
+import type { SensorUpdateMessage } from "@shared/types/websocket-message.types";
 import { useEffect, useState } from "react";
-
-interface SensorUpdateMessage {
-  type: "sensor-update";
-  data: SensorReading[];
-}
 
 type ConnectionStatus =
   | "connecting"

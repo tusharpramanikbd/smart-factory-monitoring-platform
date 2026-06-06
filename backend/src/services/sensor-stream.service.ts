@@ -1,8 +1,8 @@
 import { SENSOR_UPDATE_INTERVAL_MS } from "../constants/sensor.constants";
 import { machines } from "../data/machines";
 import { generateSensorReading } from "../simulators/sensor.simulator";
-import { SensorReading } from "../types/sensor-reading.types";
-import { SensorUpdateMessage } from "../types/websocket-message.types";
+import { SensorReading } from "@shared/types/sensor-reading.types";
+import { SensorUpdateMessage } from "@shared/types/websocket-message.types";
 import { broadcastToMachine } from "./websocket.service";
 
 const latestReadings = new Map<string, SensorReading>();

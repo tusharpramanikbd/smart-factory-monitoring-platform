@@ -4,7 +4,7 @@ import { addClient, removeClient } from "../services/websocket.service";
 import { getLatestReading } from "../services/sensor-stream.service";
 
 import { MachineWebSocketParams } from "../types/websocket-route.types";
-import { SensorUpdateMessage } from "../types/websocket-message.types";
+import { SensorUpdateMessage } from "@shared/types/websocket-message.types";
 
 export async function sensorWebSocketRoutes(app: FastifyInstance) {
   app.get("/ws/sensors/:machineId", { websocket: true }, (socket, request) => {

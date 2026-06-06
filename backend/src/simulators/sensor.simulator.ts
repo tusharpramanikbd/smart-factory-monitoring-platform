@@ -1,4 +1,4 @@
-import { SensorReading } from "../types/sensor-reading.types";
+import { SensorReading } from "@shared/types/sensor-reading.types";
 import { machineRuntimes } from "../data/machine-runtimes";
 import { MACHINE_HEALTH_PROFILES } from "../constants/machine-health-profiles";
 import { MachineHealthState } from "../types/machine-state.types";
