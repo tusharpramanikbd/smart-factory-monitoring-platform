@@ -84,6 +84,7 @@ export default function MachineDetailsPage() {
             <p className="mb-2 text-sm text-muted-foreground">
               {connectionStatus === "connecting" && "🟡 Connecting..."}
               {connectionStatus === "connected" && "🟢 Live"}
+              {connectionStatus === "reconnecting" && "🟠 Reconnecting..."}
               {connectionStatus === "disconnected" && "🔴 Disconnected"}
             </p>
 

@@ -6,42 +6,83 @@ interface SensorUpdateMessage {
   data: SensorReading[];
 }
 
+type ConnectionStatus =
+  | "connecting"
+  | "connected"
+  | "reconnecting"
+  | "disconnected";
+
+const RECONNECT_DELAY_MS = 1000;
+
 export function useMachineSensors(machineId: string) {
   const [sensorReading, setSensorReading] = useState<
     SensorReading | undefined
   >();
 
-  const [connectionStatus, setConnectionStatus] = useState<
-    "connecting" | "connected" | "disconnected"
-  >("connecting");
+  const [connectionStatus, setConnectionStatus] =
+    useState<ConnectionStatus>("connecting");
 
   useEffect(() => {
     if (!machineId) {
       return;
     }
 
-    const socket = new WebSocket(`ws://localhost:5000/ws/sensors/${machineId}`);
+    let socket: WebSocket | null = null;
 
-    socket.onopen = () => {
-      setConnectionStatus("connected");
-    };
+    let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    socket.onclose = () => {
-      setConnectionStatus("disconnected");
-    };
+    let isUnmounted = false;
 
-    socket.onerror = () => {
-      setConnectionStatus("disconnected");
-    };
+    let hasConnectedBefore = false;
 
-    socket.onmessage = (event) => {
-      const message: SensorUpdateMessage = JSON.parse(event.data);
+    function connect() {
+      if (!hasConnectedBefore) {
+        setConnectionStatus("connecting");
+      }
 
-      setSensorReading(message.data[0]);
-    };
+      socket = new WebSocket(`ws://localhost:5000/ws/sensors/${machineId}`);
+
+      socket.onopen = () => {
+        hasConnectedBefore = true;
+
+        setConnectionStatus("connected");
+      };
+
+      socket.onmessage = (event) => {
+        const message: SensorUpdateMessage = JSON.parse(event.data);
+
+        setSensorReading(message.data[0]);
+      };
+
+      socket.onerror = () => {
+        console.error("WebSocket connection error");
+      };
+
+      socket.onclose = () => {
+        if (isUnmounted) {
+          setConnectionStatus("disconnected");
+
+          return;
+        }
+
+        setConnectionStatus("reconnecting");
+
+        reconnectTimeout = setTimeout(() => {
+          connect();
+        }, RECONNECT_DELAY_MS);
+      };
+    }
+
+    connect();
 
     return () => {
-      socket.close();
+      isUnmounted = true;
+
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+      }
+
+      socket?.close();
     };
   }, [machineId]);
 
